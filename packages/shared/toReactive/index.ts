@@ -1,6 +1,6 @@
 import type { UnwrapNestedRefs } from 'vue-demi'
-import { isRef, reactive } from 'vue-demi'
-import { toValue } from '../toValue'
+// eslint-disable-next-line no-restricted-imports
+import { isRef, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '../utils'
 
 /**
@@ -17,7 +17,7 @@ export function toReactive<T extends object>(
 
   const proxy = new Proxy({}, {
     get(_, p, receiver) {
-      return toValue(Reflect.get(objectRef.value, p, receiver))
+      return unref(Reflect.get(objectRef.value, p, receiver))
     },
     set(_, p, value) {
       if (isRef((objectRef.value as any)[p]) && !isRef(value))
